@@ -1,8 +1,13 @@
 import { Grid } from "@mui/material";
 import React from "react";
+import { useLocation } from "react-router-dom";
+import shortid from "shortid";
 import Meeting from "../../components/Meeting/Meeting";
 
 const Meetings = () => {
+  const location = useLocation();
+  const { meetings, timeZone } = location?.state;
+
   return (
     <div>
       <Grid
@@ -17,18 +22,13 @@ const Meetings = () => {
           },
         }}
       >
-        <Grid xs={12} sm={12} md={12} lg={6} item>
-          <Meeting />
-        </Grid>
-        <Grid xs={12} sm={12} md={12} lg={6} item>
-          <Meeting />
-        </Grid>
-        <Grid xs={12} sm={12} md={12} lg={6} item>
-          <Meeting />
-        </Grid>
-        <Grid xs={12} sm={12} md={12} lg={6} item>
-          <Meeting />
-        </Grid>
+        {meetings.map((meet) => {
+          return (
+            <Grid key={shortid.generate()} xs={12} sm={12} md={12} lg={6} item>
+              <Meeting meet={meet} timeZone={timeZone} />
+            </Grid>
+          );
+        })}
       </Grid>
     </div>
   );

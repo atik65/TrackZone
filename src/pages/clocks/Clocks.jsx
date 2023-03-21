@@ -1,17 +1,15 @@
 import Typography from "@mui/joy/Typography";
-import { Button, Grid, Modal } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Clock from "../../components/clock/Clock";
-import CustomModal from "../../components/shared/customModal/CustomModal";
+import { ModalContext } from "../../context/ModalContextProvider";
 
 const Clocks = () => {
   const clocks = [1];
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleModal = () => {
-    setModalOpen(!modalOpen);
-  };
+  const { modalClose, modalState, handleModal } = useContext(ModalContext);
+
   return (
     <div>
       {clocks.length <= 0 && (
@@ -51,7 +49,7 @@ const Clocks = () => {
         }}
       >
         <Button
-          onClick={handleModal}
+          onClick={() => handleModal("create", "clock")}
           sx={{
             width: {
               xs: "100%",
@@ -84,6 +82,7 @@ const Clocks = () => {
           <Grid item xs={12} sm={6} md={4} xl={3}>
             <Clock />
           </Grid>
+
           <Grid item xs={12} sm={6} md={4} xl={3}>
             <Clock />
           </Grid>
@@ -98,8 +97,6 @@ const Clocks = () => {
           </Grid>
         </Grid>
       )}
-
-      <CustomModal open={modalOpen} handleModal={handleModal} />
     </div>
   );
 };

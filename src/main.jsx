@@ -9,6 +9,7 @@ import Meetings from "./pages/meetings/Meetings";
 
 import MainLayout from "./layout/MainLayout";
 import { StyledEngineProvider } from "@mui/material";
+import ModalContextProvider from "./context/ModalContextProvider";
 
 const routes = createBrowserRouter([
   {
@@ -34,8 +35,10 @@ const routes = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <StyledEngineProvider injectFirst>
-      <RouterProvider router={routes} />
-    </StyledEngineProvider>
+    <ModalContextProvider>
+      <StyledEngineProvider injectFirst>
+        <RouterProvider router={routes} />
+      </StyledEngineProvider>
+    </ModalContextProvider>
   </React.StrictMode>
 );

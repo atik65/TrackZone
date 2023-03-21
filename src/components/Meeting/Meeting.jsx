@@ -1,14 +1,11 @@
 import { Typography } from "@mui/joy";
 import { Button, Card, Chip } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
-import CustomModal from "../shared/customModal/CustomModal";
+import React, { useContext, useState } from "react";
+import { ModalContext } from "../../context/ModalContextProvider";
 
-const Meeting = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleModal = () => {
-    setModalOpen(!modalOpen);
-  };
+const Meeting = ({ meet, timeZone }) => {
+  const { modalClose, modalState, handleModal } = useContext(ModalContext);
 
   return (
     <div>
@@ -22,21 +19,25 @@ const Meeting = () => {
         <Box>
           <Chip
             sx={{ mb: "0.5rem" }}
-            label={"Time Zone: EST"}
+            label={`Time Zone: ${timeZone}`}
             size="small"
             color="primary"
           />
 
           <Typography variant="h1" component={"h1"}>
-            Meeting Title
+            {meet?.meetingTitle}
           </Typography>
 
-          <Typography variant="subtitle1" component={"subtitle"}>
-            Time: 15:45 || Date: 05-06-2023
+          <Typography variant="subtitle1" component={"h1"}>
+            Time: {new Date(meet?.meetingTime).getHours()} :
+            {new Date(meet?.meetingTime).getMinutes()} || Date:
+            {new Date(meet?.meetingTime).getDate()}-{" "}
+            {new Date(meet?.meetingTime).getMonth()}-
+            {new Date(meet?.meetingTime).getFullYear()}
           </Typography>
 
           <Typography variant="p" component={"p"}>
-            Time Difference from default Clock: 6:30 hour
+            Time Difference from default Clock: {meet?.difference} hour
           </Typography>
         </Box>
 
@@ -46,7 +47,17 @@ const Meeting = () => {
             flexDirection: "column",
           }}
         >
-          <Button onClick={handleModal} size="small" variant="contained">
+          <Button
+            onClick={() =>
+              handleModal("update", "meeting", {
+                meetingTitle: "",
+                meetingDate: new Date().toISOString(),
+                meetingTime: new Date().toISOString(),
+              })
+            }
+            size="small"
+            variant="contained"
+          >
             Update Meeting
           </Button>
           <Button
@@ -62,8 +73,6 @@ const Meeting = () => {
           </Button>
         </Box>
       </Card>
-
-      <CustomModal open={modalOpen} handleModal={handleModal} />
     </div>
   );
 };

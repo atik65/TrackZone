@@ -1,28 +1,14 @@
 import { Typography } from "@mui/joy";
-import {
-  Badge,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Chip,
-  IconButton,
-  useTheme,
-} from "@mui/material";
+import { Button, Card, CardContent, CardMedia, Chip } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
-import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-import SkipNextIcon from "@mui/icons-material/SkipNext";
+import React, { useContext } from "react";
+
 import { Link } from "react-router-dom";
-import CustomModal from "../shared/customModal/CustomModal";
+
+import { ModalContext } from "../../context/ModalContextProvider";
 
 const Clock = () => {
-  const theme = useTheme();
-  const [modalOpen, setModalOpen] = useState(false);
-  const handleModal = () => {
-    setModalOpen(!modalOpen);
-  };
-
+  const { modalClose, modalState, handleModal } = useContext(ModalContext);
   return (
     <div>
       <Card
@@ -51,7 +37,21 @@ const Clock = () => {
           </CardContent>
           <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
             <Button>
-              <Link className="link" to={"/meetings/1"}>
+              <Link
+                className="link"
+                to="/meetings/1"
+                state={{
+                  timeZone: "PST",
+                  meetings: [
+                    {
+                      meetingTitle: "hello",
+                      meetingTime: new Date().toISOString(),
+                      meetingDate: new Date().toISOString(),
+                      difference: 6,
+                    },
+                  ],
+                }}
+              >
                 All Meetings (4)
               </Link>
             </Button>
@@ -66,7 +66,7 @@ const Clock = () => {
           }}
         >
           <Button
-            onClick={handleModal}
+            onClick={() => handleModal("create", "meeting")}
             variant="outlined"
             color="primary"
             size="small"
@@ -78,7 +78,12 @@ const Clock = () => {
           </Button>
 
           <Button
-            onClick={handleModal}
+            onClick={() =>
+              handleModal("update", "clock", {
+                clockTitle: "",
+                timeZone: "GMT",
+              })
+            }
             variant="outlined"
             color="success"
             size="small"
@@ -94,8 +99,6 @@ const Clock = () => {
           </Button>
         </CardMedia>
       </Card>
-
-      <CustomModal open={modalOpen} handleModal={handleModal} />
     </div>
   );
 };

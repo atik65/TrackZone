@@ -1,6 +1,5 @@
-const { useState } = require("react");
-const { isObjectEmpty, deepClone } = require("../utils/objectUtil");
-
+import { useState } from "react";
+import { deepClone, isObjectEmpty } from "../utils/objectUtil";
 const useForm = (init, validate) => {
   const [state, setState] = useState(mapValuesToState(init));
 
@@ -21,7 +20,8 @@ const useForm = (init, validate) => {
   };
 
   const handleFocus = (e) => {
-    const { name: key, value } = e.target;
+    const { name: key } = e.target;
+
     const clonedState = deepClone(state);
 
     clonedState[key].focused = true;
@@ -34,7 +34,7 @@ const useForm = (init, validate) => {
   };
 
   const handleBlur = (e) => {
-    const { name: key, value } = e.target;
+    const { name: key } = e.target;
     const clonedState = deepClone(state);
     clonedState[key].focused = false;
 
@@ -90,6 +90,7 @@ const useForm = (init, validate) => {
   };
 
   return {
+    formState: state,
     handleBlur,
     handleChange,
     handleFocus,
@@ -118,3 +119,5 @@ const mapStateToKey = (state, key) => {
     return acc;
   }, {});
 };
+
+export default useForm;

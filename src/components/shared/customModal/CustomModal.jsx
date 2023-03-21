@@ -1,4 +1,3 @@
-import { Typography } from "@mui/joy";
 import { Modal } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
@@ -27,16 +26,16 @@ const style = {
   pb: 3,
   pt: 2,
 };
-const CustomModal = ({ open, handleModal }) => {
+const CustomModal = ({ open, handleModal, modalState }) => {
   return (
     <Modal
       open={open}
-      onClose={handleModal}
+      onClose={() => handleModal(modalState.method, modalState.modalFor)}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
       <Box sx={style}>
-        <AddUpdate handleModal={handleModal} />
+        <AddUpdate modalState={modalState} handleModal={handleModal} />
       </Box>
     </Modal>
   );
