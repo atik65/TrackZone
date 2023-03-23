@@ -24,6 +24,7 @@ const ModalContextProvider = (props) => {
 
     if (modalFor == "clock") {
       if (method == "create") {
+        clonedState.method = "create";
         clonedState.modalFor = "clock";
         clonedState.state = !modalState.state;
         clonedState.formData = {
@@ -31,6 +32,7 @@ const ModalContextProvider = (props) => {
           timeZone: "GMT",
         };
       } else if (method == "update") {
+        clonedState.method = "update";
         clonedState.modalFor = "clock";
         clonedState.state = !modalState.state;
         clonedState.formData = {
@@ -39,6 +41,7 @@ const ModalContextProvider = (props) => {
       }
     } else if (modalFor == "meeting") {
       if (method == "create") {
+        clonedState.method = "create";
         clonedState.modalFor = "meeting";
         clonedState.state = !modalState.state;
         clonedState.formData = {
@@ -47,6 +50,7 @@ const ModalContextProvider = (props) => {
           meetingTime: new Date().toISOString(),
         };
       } else if (method == "update") {
+        clonedState.method = "update";
         clonedState.modalFor = "meeting";
         clonedState.state = !modalState.state;
         clonedState.formData = {

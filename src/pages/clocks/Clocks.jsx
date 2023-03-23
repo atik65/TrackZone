@@ -4,9 +4,10 @@ import { Box } from "@mui/system";
 import React, { useContext } from "react";
 import Clock from "../../components/clock/Clock";
 import { ModalContext } from "../../context/ModalContextProvider";
+import useClocks from "../../hooks/useClocks";
 
 const Clocks = () => {
-  const clocks = [1];
+  const { clocks } = useClocks();
 
   const { modalClose, modalState, handleModal } = useContext(ModalContext);
 
@@ -19,18 +20,14 @@ const Clocks = () => {
             placeItems: "center",
           }}
         >
-          <Typography level="h5">
+          <Typography
+            sx={{
+              mb: 3,
+            }}
+            level="h5"
+          >
             No default clock, please add your default clock first.
           </Typography>
-          <Button
-            variant="contained"
-            color="primary"
-            sx={{
-              mt: "1rem",
-            }}
-          >
-            Add Clock
-          </Button>
         </Box>
       )}
 
@@ -62,7 +59,7 @@ const Clocks = () => {
           variant="contained"
           color="primary"
         >
-          Add Clock
+          {clocks.length <= 0 ? "Add Default Clock" : "Add Clock"}
         </Button>
       </Box>
 
@@ -79,11 +76,15 @@ const Clocks = () => {
           spacing={2}
           container
         >
-          <Grid item xs={12} sm={6} md={4} xl={3}>
-            <Clock />
-          </Grid>
+          {clocks.map((clock) => {
+            return (
+              <Grid key={clock.id} item xs={12} sm={6} md={4} xl={3}>
+                <Clock clock={clock} />
+              </Grid>
+            );
+          })}
 
-          <Grid item xs={12} sm={6} md={4} xl={3}>
+          {/* <Grid item xs={12} sm={6} md={4} xl={3}>
             <Clock />
           </Grid>
           <Grid item xs={12} sm={6} md={4} xl={3}>
@@ -94,7 +95,7 @@ const Clocks = () => {
           </Grid>
           <Grid item xs={12} sm={6} md={4} xl={3}>
             <Clock />
-          </Grid>
+          </Grid> */}
         </Grid>
       )}
     </div>

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 import { ModalContext } from "../../context/ModalContextProvider";
 
-const Clock = () => {
+const Clock = ({ clock }) => {
   const { modalClose, modalState, handleModal } = useContext(ModalContext);
   return (
     <div>
@@ -20,7 +20,7 @@ const Clock = () => {
               sx={{
                 mb: "1rem",
               }}
-              label="Default Clock"
+              label={`${clock.clockType} clock`}
               color="primary"
               size="small"
               variant="filed"
@@ -31,8 +31,8 @@ const Clock = () => {
               color="text.secondary"
               component="div"
             >
-              15:24 <br />
-              01-03-2023
+              {clock.clockTime} <br />
+              {clock.clockDate}
             </Typography>
           </CardContent>
           <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
@@ -41,18 +41,11 @@ const Clock = () => {
                 className="link"
                 to="/meetings/1"
                 state={{
-                  timeZone: "PST",
-                  meetings: [
-                    {
-                      meetingTitle: "hello",
-                      meetingTime: new Date().toISOString(),
-                      meetingDate: new Date().toISOString(),
-                      difference: 6,
-                    },
-                  ],
+                  timeZone: clock.timeZone,
+                  meetings: clock.meetings,
                 }}
               >
-                All Meetings (4)
+                All Meetings ({clock.meetings.length})
               </Link>
             </Button>
           </Box>

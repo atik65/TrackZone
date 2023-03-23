@@ -24,7 +24,7 @@ const Meetings = () => {
       >
         {meetings.map((meet) => {
           return (
-            <Grid key={shortid.generate()} xs={12} sm={12} md={12} lg={6} item>
+            <Grid key={meet.id} xs={12} sm={12} md={12} lg={6} item>
               <Meeting meet={meet} timeZone={timeZone} />
             </Grid>
           );

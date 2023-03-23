@@ -27,18 +27,7 @@ const timeZones = [
 ];
 
 const AddUpdate = ({ handleModal, modalState }) => {
-  // const { formState, handleSubmit, handleBlur, handleChange, handleFocus } =
-  //   useForm(
-  //     {
-  //       clockTitle: "",
-  //       meetingTitle: "",
-  //       timeZone: "GMT",
-
-  //       meetingDate: new Date().toISOString(),
-  //       meetingTime: new Date().toISOString(),
-  //     },
-  //     true
-  //   );
+  console.log(modalState);
   const { formState, handleSubmit, handleBlur, handleChange, handleFocus } =
     useForm(
       {
@@ -49,7 +38,6 @@ const AddUpdate = ({ handleModal, modalState }) => {
 
   const submitHandler = ({ errors, hasError, values }) => {
     handleModal(modalState.method, modalState.modalFor);
-    console.log(values);
   };
 
   return (
@@ -63,7 +51,8 @@ const AddUpdate = ({ handleModal, modalState }) => {
         variant="h1"
         component="h1"
       >
-        Add Clock
+        {modalState?.method == "create" ? "Add" : "Update"}{" "}
+        {modalState?.modalFor == "clock" ? "Clock" : "Meeting"}
       </Typography>
 
       <form onSubmit={(e) => handleSubmit(e, submitHandler)}>
@@ -197,7 +186,8 @@ const AddUpdate = ({ handleModal, modalState }) => {
         )}
 
         <Button type="submit" variant="contained" fullWidth sx={{ mt: "1rem" }}>
-          Add Clock
+          {modalState?.method == "create" ? "Add" : "Update"}{" "}
+          {modalState?.modalFor == "clock" ? "Clock" : "Meeting"}
         </Button>
       </form>
     </div>
