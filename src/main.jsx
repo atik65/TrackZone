@@ -10,6 +10,7 @@ import Meetings from "./pages/meetings/Meetings";
 import MainLayout from "./layout/MainLayout";
 import { StyledEngineProvider } from "@mui/material";
 import ModalContextProvider from "./context/ModalContextProvider";
+import ClocksContextProvider from "./context/ClocksContextProvider";
 
 const routes = createBrowserRouter([
   {
@@ -35,10 +36,12 @@ const routes = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ModalContextProvider>
-      <StyledEngineProvider injectFirst>
-        <RouterProvider router={routes} />
-      </StyledEngineProvider>
-    </ModalContextProvider>
+    <ClocksContextProvider>
+      <ModalContextProvider>
+        <StyledEngineProvider injectFirst>
+          <RouterProvider router={routes} />
+        </StyledEngineProvider>
+      </ModalContextProvider>
+    </ClocksContextProvider>
   </React.StrictMode>
 );

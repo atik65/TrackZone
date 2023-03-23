@@ -1,6 +1,6 @@
 import { Typography } from "@mui/joy";
 import { Button, MenuItem, TextField } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -10,8 +10,17 @@ import { TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import useForm from "../../../hooks/useForm";
 import { Box } from "@mui/system";
+import { timeConvert } from "../../../utils/clock";
+import { format } from "date-fns";
+import useClocks from "../../../hooks/useClocks";
+import { ModalContext } from "../../../context/ModalContextProvider";
+import { ClocksContext } from "../../../context/ClocksContextProvider";
 
 const timeZones = [
+  {
+    value: "SYSTEM TIME",
+    label: "SYSTEM TIME",
+  },
   {
     value: "EST",
     label: "EST",
@@ -21,23 +30,44 @@ const timeZones = [
     label: "PST",
   },
   {
-    value: "GMT",
-    label: "GMT",
+    value: "UTC",
+    label: "UTC",
   },
 ];
 
+const validation = (values) => {
+  const { clockTitle } = values;
+  const errors = {};
+
+  if (!clockTitle) {
+    errors.clockTitle = "Clock Title is required";
+  }
+  return errors;
+};
+
 const AddUpdate = ({ handleModal, modalState }) => {
-  console.log(modalState);
+  const { addClock, updateClock } = useContext(ClocksContext);
+
   const { formState, handleSubmit, handleBlur, handleChange, handleFocus } =
     useForm(
       {
         ...modalState.formData,
       },
-      true
+      validation
     );
 
   const submitHandler = ({ errors, hasError, values }) => {
-    handleModal(modalState.method, modalState.modalFor);
+    if (!hasError) {
+      if (modalState.modalFor == "clock") {
+        if (modalState.method == "create") {
+          addClock(values);
+        } else {
+          updateClock(values);
+        }
+      } else if (modalState.modalFor == "meeting") {
+      }
+      handleModal(modalState.method, modalState.modalFor);
+    }
   };
 
   return (
@@ -59,7 +89,11 @@ const AddUpdate = ({ handleModal, modalState }) => {
         {modalState.modalFor == "clock" && (
           <Box>
             <TextField
-              sx={{ mb: "1.2rem" }}
+              error={!!formState?.clockTitle.error}
+              helperText={formState?.clockTitle.error}
+              sx={{
+                mb: "1.2rem",
+              }}
               id="outlined-clock-title"
               placeholder="Clock Title"
               label="Clock Title"
@@ -73,14 +107,18 @@ const AddUpdate = ({ handleModal, modalState }) => {
             />
 
             <TextField
+              error={!!formState?.timeZone.error}
+              helperText={
+                formState?.timeZone.error
+                  ? formState?.timeZone.error
+                  : "Please select Time Zone"
+              }
               fullWidth
               sx={{ mb: "1.2rem" }}
               size="small"
               id="outlined-select-currency"
               select
               label="Time Zone"
-              defaultValue="EUR"
-              helperText="Please select Time Zone"
               name="timeZone"
               onBlur={() =>
                 handleBlur({
@@ -111,6 +149,8 @@ const AddUpdate = ({ handleModal, modalState }) => {
         {modalState.modalFor == "meeting" && (
           <Box>
             <TextField
+              error={!!formState?.meetingTitle.error}
+              helperText={formState?.meetingTitle.error}
               sx={{ mb: "1.2rem" }}
               id="outlined-meeting-title"
               placeholder="Meeting Title"

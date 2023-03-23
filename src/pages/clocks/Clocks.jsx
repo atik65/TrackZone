@@ -3,13 +3,13 @@ import { Button, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext } from "react";
 import Clock from "../../components/clock/Clock";
+import { ClocksContext } from "../../context/ClocksContextProvider";
 import { ModalContext } from "../../context/ModalContextProvider";
-import useClocks from "../../hooks/useClocks";
 
 const Clocks = () => {
-  const { clocks } = useClocks();
+  const { clocks } = useContext(ClocksContext);
 
-  const { modalClose, modalState, handleModal } = useContext(ModalContext);
+  const { handleModal } = useContext(ModalContext);
 
   return (
     <div>
@@ -76,26 +76,13 @@ const Clocks = () => {
           spacing={2}
           container
         >
-          {clocks.map((clock) => {
+          {clocks?.map((clock) => {
             return (
               <Grid key={clock.id} item xs={12} sm={6} md={4} xl={3}>
                 <Clock clock={clock} />
               </Grid>
             );
           })}
-
-          {/* <Grid item xs={12} sm={6} md={4} xl={3}>
-            <Clock />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} xl={3}>
-            <Clock />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} xl={3}>
-            <Clock />
-          </Grid>
-          <Grid item xs={12} sm={6} md={4} xl={3}>
-            <Clock />
-          </Grid> */}
         </Grid>
       )}
     </div>

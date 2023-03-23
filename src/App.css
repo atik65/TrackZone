@@ -10,3 +10,7 @@
   color: #000;
   font-weight: 600;
 }
+
+.MuiFormHelperText-root {
+  margin-left: 0px !important;
+}

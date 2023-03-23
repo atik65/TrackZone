@@ -29,7 +29,7 @@ const ModalContextProvider = (props) => {
         clonedState.state = !modalState.state;
         clonedState.formData = {
           clockTitle: "",
-          timeZone: "GMT",
+          timeZone: "SYSTEM TIME",
         };
       } else if (method == "update") {
         clonedState.method = "update";

@@ -52,7 +52,16 @@ const useForm = (init, validate) => {
   const handleSubmit = (e, cb) => {
     e.preventDefault();
 
+    const clonedState = deepClone(state);
     const { errors, hasError, values } = getErrors(validate);
+
+    Object.keys(errors).map((key) => {
+      if (errors[key]) {
+        clonedState[key].error = errors[key];
+      }
+    });
+
+    setState(clonedState);
 
     cb({
       errors,
