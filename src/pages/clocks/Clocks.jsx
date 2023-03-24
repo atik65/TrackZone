@@ -23,6 +23,7 @@ const Clocks = () => {
           <Typography
             sx={{
               mb: 3,
+              px: "1rem",
             }}
             level="h5"
           >
@@ -35,7 +36,7 @@ const Clocks = () => {
         sx={{
           display: "flex",
           justifyContent: "center",
-          pl: "1rem",
+          px: "1rem",
           mb: "2rem",
           mx: "auto",
           width: {
@@ -67,6 +68,9 @@ const Clocks = () => {
         <Grid
           sx={{
             mx: "auto",
+
+            pr: "1rem",
+
             width: {
               xs: "98%",
               sm: "80%",
