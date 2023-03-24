@@ -27,6 +27,7 @@ const Meetings = () => {
           <Typography
             sx={{
               mb: 3,
+              px: "1rem",
             }}
             level="h5"
           >
@@ -42,6 +43,7 @@ const Meetings = () => {
           rowSpacing={"2rem"}
           sx={{
             mx: "auto",
+            pr: "1rem",
             width: {
               xs: "98%",
               sm: "80%",
