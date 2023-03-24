@@ -55,7 +55,7 @@ const Nav = () => {
           textAlign: "center",
         }}
       >
-        Welcome to TrackZone App
+        TrackZone App
       </Typography>
     </div>
   );
