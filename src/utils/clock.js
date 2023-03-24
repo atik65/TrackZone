@@ -40,4 +40,34 @@ const timeDifference = (baseZone, toZone) => {
   return result;
 };
 
-export { timeConvert, timeDifference };
+const timeConvertToDefaultZone = (defaultZone, currentZone, currentDate) => {
+  let date = new Date(currentDate);
+
+  if (currentZone == "PST") {
+    date = addMinutes(date, 420);
+  } else if (currentZone == "EST") {
+    date = addMinutes(date, 240);
+  } else if (currentZone == "UTC") {
+    date = addMinutes(date, 0);
+  } else if (currentZone == "SYSTEM TIME") {
+    date = addMinutes(date, new Date().getTimezoneOffset());
+  }
+
+  if (defaultZone == "PST") {
+    date = subMinutes(date, 420);
+  } else if (defaultZone == "EST") {
+    date = subMinutes(date, 240);
+  } else if (defaultZone == "UTC") {
+    date = subMinutes(date, 0);
+  } else if (defaultZone == "SYSTEM TIME") {
+    if (new Date().getTimezoneOffset() < 0) {
+      date = addMinutes(date, new Date().getTimezoneOffset() * -1);
+    } else {
+      date = subMinutes(date, new Date().getTimezoneOffset());
+    }
+  }
+
+  return date.toISOString();
+};
+
+export { timeConvert, timeDifference, timeConvertToDefaultZone };

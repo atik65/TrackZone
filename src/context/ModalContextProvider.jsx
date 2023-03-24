@@ -53,7 +53,7 @@ const ModalContextProvider = (props) => {
       } else if (method == "update") {
         clonedState.method = "update";
         clonedState.modalFor = "meeting";
-        clonedState.clockID = prevData.id;
+        clonedState.clockID = prevData.clockID;
         clonedState.state = !modalState.state;
         clonedState.formData = {
           ...prevData,

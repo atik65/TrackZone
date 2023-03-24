@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { useState } from "react";
 import shortid from "shortid";
 import { timeConvert, timeDifference } from "../utils/clock";
+import { addToLocalStorage, getFromLocalStorage } from "../utils/localStorage";
 import { deepClone } from "../utils/objectUtil";
 
 const init = [
@@ -32,7 +33,7 @@ const init = [
 ];
 
 const useClocks = () => {
-  const [clocks, setClocks] = useState(init);
+  const [clocks, setClocks] = useState(getFromLocalStorage("clocks") || init);
 
   const addClock = (clockData) => {
     const newClock = {
@@ -54,6 +55,7 @@ const useClocks = () => {
     const clonedState = deepClone(clocks);
     clonedState.push(newClock);
     setClocks(clonedState);
+    addToLocalStorage("clocks", clonedState);
   };
 
   const updateClock = (updatedClock) => {
@@ -84,6 +86,7 @@ const useClocks = () => {
     });
 
     setClocks(clonedState);
+    addToLocalStorage("clocks", clonedState);
   };
 
   const deleteClock = (clockID) => {
@@ -97,6 +100,7 @@ const useClocks = () => {
     });
 
     setClocks(clonedState);
+    addToLocalStorage("clocks", clonedState);
   };
 
   const addMeeting = (clockID, newMeeting) => {
@@ -117,6 +121,77 @@ const useClocks = () => {
     });
 
     setClocks(clonedState);
+    addToLocalStorage("clocks", clonedState);
+  };
+
+  const updateMeeting = (clockID, updatedMeeting) => {
+    // console.log(updatedMeeting);
+    let clonedState = deepClone(clocks);
+    const newMeeting = {
+      id: updatedMeeting.id,
+      meetingTitle: updatedMeeting.meetingTitle,
+      meetingDate: updatedMeeting.meetingDate,
+      meetingTime: updatedMeeting.meetingTime,
+      difference: updatedMeeting.difference,
+    };
+
+    const targetClock = clonedState.find((clock) => {
+      if (clock.id == clockID) {
+        return clock;
+      }
+    });
+
+    const newMeetings = targetClock.meetings.map((meet) => {
+      if (meet.id == updatedMeeting.id) {
+        return {
+          ...newMeeting,
+        };
+      }
+
+      return meet;
+    });
+
+    targetClock.meetings = [...newMeetings];
+
+    clonedState = clonedState.map((clock) => {
+      if (clock.id == clockID) {
+        return {
+          ...targetClock,
+        };
+      }
+      return clock;
+    });
+
+    setClocks(clonedState);
+    addToLocalStorage("clocks", clonedState);
+  };
+
+  const deleteMeeting = (clockID, meetingId) => {
+    let clonedState = deepClone(clocks);
+
+    const targetClock = clonedState.find((clock) => {
+      if (clock.id == clockID) {
+        return clock;
+      }
+    });
+
+    const newMeetings = targetClock.meetings.filter((meet) => {
+      return meet.id != meetingId;
+    });
+
+    targetClock.meetings = [...newMeetings];
+
+    clonedState = clonedState.map((clock) => {
+      if (clock.id == clockID) {
+        return {
+          ...targetClock,
+        };
+      }
+      return clock;
+    });
+
+    setClocks(clonedState);
+    addToLocalStorage("clocks", clonedState);
   };
 
   return {
@@ -125,6 +200,8 @@ const useClocks = () => {
     updateClock,
     deleteClock,
     addMeeting,
+    updateMeeting,
+    deleteMeeting,
   };
 };
 

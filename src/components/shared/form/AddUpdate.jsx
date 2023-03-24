@@ -10,11 +10,16 @@ import { TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import useForm from "../../../hooks/useForm";
 import { Box } from "@mui/system";
-import { timeConvert, timeDifference } from "../../../utils/clock";
+import {
+  timeConvert,
+  timeConvertToDefaultZone,
+  timeDifference,
+} from "../../../utils/clock";
 import { format } from "date-fns";
 import useClocks from "../../../hooks/useClocks";
 import { ModalContext } from "../../../context/ModalContextProvider";
 import { ClocksContext } from "../../../context/ClocksContextProvider";
+import { getFromLocalStorage } from "../../../utils/localStorage";
 
 const timeZones = [
   {
@@ -36,9 +41,9 @@ const timeZones = [
 ];
 
 const AddUpdate = ({ handleModal, modalState }) => {
-  const { addClock, updateClock, addMeeting } = useContext(ClocksContext);
-
-  // console.log(timeDifference("UTC", "PST"));
+  // console.log(getFromLocalStorage("clocks"));
+  const { addClock, updateClock, addMeeting, updateMeeting } =
+    useContext(ClocksContext);
 
   const validation = (values) => {
     const { clockTitle, meetingTitle } = values;
@@ -70,7 +75,6 @@ const AddUpdate = ({ handleModal, modalState }) => {
     );
 
   const submitHandler = ({ errors, hasError, values }) => {
-    console.log(modalState);
     if (!hasError) {
       if (modalState.modalFor == "clock") {
         if (modalState.method == "create") {
@@ -82,6 +86,7 @@ const AddUpdate = ({ handleModal, modalState }) => {
         if (modalState.method == "create") {
           addMeeting(modalState.clockID, values);
         } else {
+          updateMeeting(modalState.clockID, values);
         }
       }
       handleModal(modalState.method, modalState.modalFor);

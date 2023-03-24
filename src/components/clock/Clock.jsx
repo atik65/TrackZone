@@ -86,8 +86,9 @@ const Clock = ({ clock: baseClock }) => {
                 className="link"
                 to={`/meetings/${clock.id}`}
                 state={{
+                  clockID: clock.id,
                   timeZone: clock.timeZone,
-                  meetings: clock.meetings,
+                  meetings: [...clock.meetings],
                 }}
               >
                 All Meetings ({clock.meetings.length})

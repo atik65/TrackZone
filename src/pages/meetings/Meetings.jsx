@@ -1,13 +1,19 @@
 import { Typography } from "@mui/joy";
 import { Box, Grid } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import shortid from "shortid";
 import Meeting from "../../components/Meeting/Meeting";
-
+import { ClocksContext } from "../../context/ClocksContextProvider";
 const Meetings = () => {
+  const { clocks } = useContext(ClocksContext);
   const location = useLocation();
-  const { meetings, timeZone } = location?.state;
+  const { meetings: curMeetings, timeZone, clockID } = location?.state;
+
+  const [meetings, setMeetings] = useState(curMeetings);
+
+  useEffect(() => {
+    setMeetings(clocks.find((c) => c.id == clockID).meetings);
+  }, [clocks.find((c) => c.id == clockID).meetings]);
 
   return (
     <div>
@@ -33,6 +39,7 @@ const Meetings = () => {
         <Grid
           container
           spacing={"1rem"}
+          rowSpacing={"2rem"}
           sx={{
             mx: "auto",
             width: {
@@ -42,10 +49,10 @@ const Meetings = () => {
             },
           }}
         >
-          {meetings.map((meet) => {
+          {meetings?.map((meet) => {
             return (
-              <Grid key={meet.id} xs={12} sm={12} md={12} lg={6} item>
-                <Meeting meet={meet} timeZone={timeZone} />
+              <Grid key={meet.id} xs={12} sm={12} md={6} lg={6} xl={4} item>
+                <Meeting clockID={clockID} meet={meet} timeZone={timeZone} />
               </Grid>
             );
           })}
