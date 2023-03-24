@@ -8,20 +8,52 @@ import {
   Grid,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useContext } from "react";
+import { format } from "date-fns";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 import { ClocksContext } from "../../context/ClocksContextProvider";
 
 import { ModalContext } from "../../context/ModalContextProvider";
+import { timeConvert } from "../../utils/clock";
 
-const Clock = ({ clock }) => {
-  const { modalClose, modalState, handleModal } = useContext(ModalContext);
+const Clock = ({ clock: baseClock }) => {
+  const [clock, setClock] = useState(baseClock);
+  const { handleModal } = useContext(ModalContext);
   const { deleteClock } = useContext(ClocksContext);
+
+  useEffect(() => {
+    const clockTimeout = setTimeout(() => {
+      let newClock = {
+        ...baseClock,
+      };
+
+      newClock.clockTime = format(
+        new Date(timeConvert(clock.timeZone)),
+        "hh:mm:ss a"
+      );
+
+      newClock.clockDate = format(
+        new Date(timeConvert(clock.timeZone)),
+        "dd MMMM yyyy"
+      );
+
+      setClock(newClock);
+    }, 1000);
+    return () => {
+      clearTimeout(clockTimeout);
+    };
+  }, [clock.clockTime]);
+
   return (
     <div>
       <Card
-        sx={{ pr: "1rem", display: "grid", gridTemplateColumns: "3fr 2fr" }}
+        sx={{
+          pr: "1rem",
+          display: "grid",
+          gridTemplateColumns: "3fr 2fr",
+          minHeight: "205px",
+        }}
       >
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardContent sx={{ flex: "1 0 auto", pt: "0.5rem", pb: "0.5rem" }}>
@@ -93,7 +125,11 @@ const Clock = ({ clock }) => {
           />
 
           <Button
-            onClick={() => handleModal("create", "meeting")}
+            onClick={() =>
+              handleModal("create", "meeting", {
+                ...clock,
+              })
+            }
             variant="outlined"
             color="primary"
             size="small"

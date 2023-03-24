@@ -4,7 +4,8 @@ import useClocks from "../hooks/useClocks";
 export const ClocksContext = createContext();
 
 const ClocksContextProvider = (props) => {
-  const { clocks, addClock, updateClock, deleteClock } = useClocks();
+  const { clocks, addClock, updateClock, deleteClock, addMeeting } =
+    useClocks();
 
   return (
     <ClocksContext.Provider
@@ -13,6 +14,7 @@ const ClocksContextProvider = (props) => {
         addClock,
         updateClock,
         deleteClock,
+        addMeeting,
       }}
     >
       {props.children}

@@ -1,14 +1,14 @@
 import { format } from "date-fns";
 import { useState } from "react";
 import shortid from "shortid";
-import { timeConvert } from "../utils/clock";
+import { timeConvert, timeDifference } from "../utils/clock";
 import { deepClone } from "../utils/objectUtil";
 
 const init = [
   // {
   //   id: shortid.generate(),
   //   clockTitle: "",
-  //   timeZone: "GMT",
+  //   timeZone: "UTC",
   //   clockType: "Default",
   //   clockTime: format(new Date(), "hh:mm:ss a"),
   //   clockDate: format(new Date(), "dd MMMM yyyy"),
@@ -99,11 +99,32 @@ const useClocks = () => {
     setClocks(clonedState);
   };
 
+  const addMeeting = (clockID, newMeeting) => {
+    let clonedState = deepClone(clocks);
+
+    clonedState = clonedState.map((clock) => {
+      if (clock.id == clockID) {
+        clock.meetings = [
+          ...clock.meetings,
+          {
+            id: shortid.generate(),
+            difference: timeDifference(clocks[0].timeZone, clock.timeZone),
+            ...newMeeting,
+          },
+        ];
+      }
+      return clock;
+    });
+
+    setClocks(clonedState);
+  };
+
   return {
     clocks,
     addClock,
     updateClock,
     deleteClock,
+    addMeeting,
   };
 };
 

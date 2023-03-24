@@ -1,4 +1,9 @@
-import { addMinutes, subMinutes } from "date-fns";
+import {
+  addMinutes,
+  differenceInHours,
+  differenceInMinutes,
+  subMinutes,
+} from "date-fns";
 
 const timeConvert = (timeZone) => {
   let date = new Date();
@@ -26,4 +31,13 @@ const timeConvert = (timeZone) => {
   }
 };
 
-export { timeConvert };
+const timeDifference = (baseZone, toZone) => {
+  let baseTime = timeConvert(baseZone);
+  let toTime = timeConvert(toZone);
+  let result = differenceInHours(new Date(toTime), new Date(baseTime));
+
+  // will return time difference from base time to toTime in min
+  return result;
+};
+
+export { timeConvert, timeDifference };

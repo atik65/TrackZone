@@ -10,7 +10,7 @@ import { TimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import useForm from "../../../hooks/useForm";
 import { Box } from "@mui/system";
-import { timeConvert } from "../../../utils/clock";
+import { timeConvert, timeDifference } from "../../../utils/clock";
 import { format } from "date-fns";
 import useClocks from "../../../hooks/useClocks";
 import { ModalContext } from "../../../context/ModalContextProvider";
@@ -35,18 +35,31 @@ const timeZones = [
   },
 ];
 
-const validation = (values) => {
-  const { clockTitle } = values;
-  const errors = {};
-
-  if (!clockTitle) {
-    errors.clockTitle = "Clock Title is required";
-  }
-  return errors;
-};
-
 const AddUpdate = ({ handleModal, modalState }) => {
-  const { addClock, updateClock } = useContext(ClocksContext);
+  const { addClock, updateClock, addMeeting } = useContext(ClocksContext);
+
+  // console.log(timeDifference("UTC", "PST"));
+
+  const validation = (values) => {
+    const { clockTitle, meetingTitle } = values;
+    let errors = {};
+
+    if (modalState.modalFor == "clock") {
+      if (!clockTitle) {
+        errors = {
+          clockTitle: "Clock Title is required",
+        };
+      }
+    } else {
+      if (!meetingTitle) {
+        errors = {
+          meetingTitle: "Meeting Title is required",
+        };
+      }
+    }
+
+    return errors;
+  };
 
   const { formState, handleSubmit, handleBlur, handleChange, handleFocus } =
     useForm(
@@ -57,6 +70,7 @@ const AddUpdate = ({ handleModal, modalState }) => {
     );
 
   const submitHandler = ({ errors, hasError, values }) => {
+    console.log(modalState);
     if (!hasError) {
       if (modalState.modalFor == "clock") {
         if (modalState.method == "create") {
@@ -65,6 +79,10 @@ const AddUpdate = ({ handleModal, modalState }) => {
           updateClock(values);
         }
       } else if (modalState.modalFor == "meeting") {
+        if (modalState.method == "create") {
+          addMeeting(modalState.clockID, values);
+        } else {
+        }
       }
       handleModal(modalState.method, modalState.modalFor);
     }
