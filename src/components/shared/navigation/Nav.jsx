@@ -2,6 +2,7 @@ import { Typography } from "@mui/joy";
 import { Button, Grid } from "@mui/material";
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import HowToUse from "../../howToUse/HowToUse";
 
 const Nav = () => {
   const location = useLocation();
@@ -50,13 +51,15 @@ const Nav = () => {
         sx={{
           fontSize: "2rem",
           fontWeight: 600,
-          mb: "2rem",
+          // mb: "2rem",
           mt: "0",
           textAlign: "center",
         }}
       >
         TrackZone App
       </Typography>
+
+      <HowToUse />
     </div>
   );
 };
