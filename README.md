@@ -10,6 +10,6 @@ Each meeting will show the time of that meeting in selected clock timezone and l
 
 ## How to use?
 
-- 1. Create your default clock.
-- 2. Create other clock in other timezone for each client.
-- 3. Add meetings under client clock
+-  Create your default clock.
+-  Create other clock in other timezone for each client.
+-  Add meetings under client clock
