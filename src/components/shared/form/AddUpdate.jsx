@@ -20,28 +20,30 @@ import useClocks from "../../../hooks/useClocks";
 import { ModalContext } from "../../../context/ModalContextProvider";
 import { ClocksContext } from "../../../context/ClocksContextProvider";
 import { getFromLocalStorage } from "../../../utils/localStorage";
+import timeZoneData from "../../../utils/timeZone";
 
-const timeZones = [
-  {
-    value: "SYSTEM TIME",
-    label: "SYSTEM TIME",
-  },
-  {
-    value: "EST",
-    label: "EST",
-  },
-  {
-    value: "PST",
-    label: "PST",
-  },
-  {
-    value: "UTC",
-    label: "UTC",
-  },
-];
+// const timeZones = [
+//   {
+//     value: "SYSTEM TIME",
+//     label: "SYSTEM TIME",
+//   },
+//   {
+//     value: "EST",
+//     label: "EST",
+//   },
+//   {
+//     value: "PST",
+//     label: "PST",
+//   },
+//   {
+//     value: "UTC",
+//     label: "UTC",
+//   },
+// ];
+
+const timeZones = timeZoneData;
 
 const AddUpdate = ({ handleModal, modalState }) => {
-  // console.log(getFromLocalStorage("clocks"));
   const { addClock, updateClock, addMeeting, updateMeeting } =
     useContext(ClocksContext);
 

@@ -64,7 +64,7 @@ const useClocks = () => {
     };
 
     newClock.clockTime = format(
-      new Date(timeConvert(updatedClock.timeZone)),
+      new Date(timeConvert(newClock.timeZone)),
       "hh:mm:ss a"
     );
 

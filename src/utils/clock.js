@@ -1,34 +1,24 @@
-import {
-  addMinutes,
-  differenceInHours,
-  differenceInMinutes,
-  subMinutes,
-} from "date-fns";
+import { addMinutes, differenceInHours, subMinutes } from "date-fns";
+import timeZoneData from "./timeZone";
 
-const timeConvert = (timeZone) => {
+const timeZones = timeZoneData.reduce((acc, curr) => {
+  acc = {
+    ...acc,
+    [curr.label]: {
+      ...curr,
+    },
+  };
+  return acc;
+}, {});
+
+const timeConvert = (timeZone, offset = 0) => {
   let date = new Date();
-  let timeOffset = date.getTimezoneOffset();
-  switch (timeZone) {
-    case "EST": {
-      date = addMinutes(date, timeOffset);
-      date = subMinutes(date, 240);
-      return new Date(`${date}`).toISOString();
-    }
+  let timeOffset = timeZones[timeZone]?.offset || offset;
+  let utc = addMinutes(date, new Date().getTimezoneOffset());
 
-    case "PST": {
-      date = addMinutes(date, timeOffset);
-      date = subMinutes(date, 420);
-      return new Date(`${date}`).toISOString();
-    }
-    case "UTC": {
-      date = addMinutes(date, timeOffset);
-      date = subMinutes(date, 0);
-      return new Date(`${date}`).toISOString();
-    }
-    default: {
-      return new Date(`${date}`).toISOString();
-    }
-  }
+  utc = subMinutes(utc, timeOffset);
+
+  return new Date(utc).toISOString();
 };
 
 const timeDifference = (baseZone, toZone) => {
@@ -42,30 +32,8 @@ const timeDifference = (baseZone, toZone) => {
 
 const timeConvertToDefaultZone = (defaultZone, currentZone, currentDate) => {
   let date = new Date(currentDate);
-
-  if (currentZone == "PST") {
-    date = addMinutes(date, 420);
-  } else if (currentZone == "EST") {
-    date = addMinutes(date, 240);
-  } else if (currentZone == "UTC") {
-    date = addMinutes(date, 0);
-  } else if (currentZone == "SYSTEM TIME") {
-    date = addMinutes(date, new Date().getTimezoneOffset());
-  }
-
-  if (defaultZone == "PST") {
-    date = subMinutes(date, 420);
-  } else if (defaultZone == "EST") {
-    date = subMinutes(date, 240);
-  } else if (defaultZone == "UTC") {
-    date = subMinutes(date, 0);
-  } else if (defaultZone == "SYSTEM TIME") {
-    if (new Date().getTimezoneOffset() < 0) {
-      date = addMinutes(date, new Date().getTimezoneOffset() * -1);
-    } else {
-      date = subMinutes(date, new Date().getTimezoneOffset());
-    }
-  }
+  date = addMinutes(date, timeZones[currentZone].offset);
+  date = subMinutes(date, timeZones[defaultZone].offset);
 
   return date.toISOString();
 };

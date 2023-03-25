@@ -13,7 +13,6 @@ const Meeting = ({ meet: curMeeting, timeZone, clockID }) => {
 
   const [meet, setMeet] = useState(curMeeting);
 
-  console.log(timeZone);
   useEffect(
     () => {
       setMeet(
@@ -30,7 +29,7 @@ const Meeting = ({ meet: curMeeting, timeZone, clockID }) => {
     // clocks[0].timeZone
   );
 
-  console.log(clocks);
+  // console.log(clocks);
 
   return (
     <div>
