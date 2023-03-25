@@ -33,7 +33,10 @@ export default function HowToUse() {
       <Drawer anchor={"top"} open={state} onClose={toggleDrawer}>
         <Box
           sx={{
-            width: "80%",
+            maxWidth: {
+              xs: "95%",
+              md: "80%",
+            },
             mx: "auto",
             py: "2rem",
             pb: "1rem",
@@ -50,15 +53,6 @@ export default function HowToUse() {
               >
                 What is TrackZone
               </Typography>
-
-              {/* <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                adjective
-              </Typography> */}
-              {/* <Typography variant="body2">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography> */}
 
               <Typography>
                 Suppose you have 3 international client . They lives in
