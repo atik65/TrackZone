@@ -4,7 +4,7 @@ import timeZoneData from "./timeZone";
 const timeZones = timeZoneData.reduce((acc, curr) => {
   acc = {
     ...acc,
-    [curr.label]: {
+    [curr.value]: {
       ...curr,
     },
   };
