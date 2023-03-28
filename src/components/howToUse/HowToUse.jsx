@@ -30,7 +30,7 @@ export default function HowToUse() {
           What is TrackZone or How to use?{" "}
         </Button>
       </Box>
-      <Drawer anchor={"top"} open={state} onClose={toggleDrawer}>
+      <Drawer anchor={"bottom"} open={state} onClose={toggleDrawer}>
         <Box
           sx={{
             maxWidth: {
@@ -39,7 +39,7 @@ export default function HowToUse() {
             },
             mx: "auto",
             py: "2rem",
-            pb: "1rem",
+            pb: "3rem",
             fontSize: "1.2rem",
             textAlign: "justify",
           }}
